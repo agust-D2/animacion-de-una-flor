@@ -17,6 +17,10 @@ float rojo=0, verde=0, azul=0;
 double delta;
 int tiempoActual, tiempoAnterior;
 
+//Creamos variables para la creacion de la circunferencia de la hoja
+static float radius = 15;
+static double w;
+
 
 //PARA LAS CURVAS USAMOS hermiteCubico.cpp
 // Declaramos variables globales que nos ayudara en la creacion de las curvas	
@@ -51,10 +55,9 @@ int tiempoActual, tiempoAnterior;
 	static int z;
 	static float u, H0, H1, H2, H3;
 // Fin de los globales.
-	
-//Creamos variables para la creacion de la circunferencia de la hoja
-static float radius = 15;
-static double w;
+
+
+
 	
 //Funcion para el calculo de vectores de tangente de punto final
 void CalcularVectorTangente(void){ 
@@ -277,13 +280,15 @@ void pasto(){
 			 tangentVectors[1][1] = -17;
 			 tangentVectors[1][2] = 0;
 			 
+			 glColor3f(0.137255, 0.556863, 0.137255);
 			 for( int q=-150;q<=150;q+=15){
 			 glPushMatrix();
  			 glScalef(0.5,0.5,0);
  			 glScalef(0.5,0.5,0);
 			 glTranslatef( q, 60, 0 );
-			 glColor3f(0.137255, 0.556863, 0.137255);
+			 glBegin(GL_LINE_STRIP);
 			 HermiteCubico();
+			 glEnd();
 			 glPopMatrix();
 			 
 			 glPushMatrix();
@@ -291,8 +296,9 @@ void pasto(){
  			 glScalef(0.5,0.5,0);
 			 glTranslatef( -q, 63, 0 );
 			 glRotatef(180, 0.0f,1.0f,0.0f);
-			 glColor3f(0.137255, 0.556863, 0.137255);
+			 glBegin(GL_LINE_STRIP);
 			 HermiteCubico();
+			 glEnd();
 			 glPopMatrix();
 			 }
 			 
@@ -301,8 +307,9 @@ void pasto(){
  			 glScalef(0.5,0.5,0);
  			 glScalef(0.5,0.5,0);
 			 glTranslatef( q+10, 53, 0 );
-			 glColor3f(0.137255, 0.556863, 0.137255);
+			 glBegin(GL_LINE_STRIP);
 			 HermiteCubico();
+			 glEnd();
 			 glPopMatrix();
 			 
 			 glPushMatrix();
@@ -310,8 +317,9 @@ void pasto(){
  			 glScalef(0.5,0.5,0);
 			 glTranslatef( -q+10, 58, 0 );
 			 glRotatef(180, 0.0f,1.0f,0.0f);
-			 glColor3f(0.137255, 0.556863, 0.137255);
+			 glBegin(GL_LINE_STRIP);
 			 HermiteCubico();
+			 glEnd();
 			 glPopMatrix();
 			 }
 }
@@ -638,24 +646,18 @@ void dibuja(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(1.0, 1.0, 1.0, 0.0);//color de fondo
     
-    
     /* Se guarda la matriz de transformación para no afectar
      * las siguientes primitivas dibujadas */  
 	glPushMatrix();
-	glTranslatef( 0, -47.5, 0 );	
-	
+	glTranslatef( 0, -47.5, 0 );			 
 			 sol();
-			  
 			 nubes();
-			 
 			 pasto();
-			 
 	/*
 	En esta matriz se hace la rotacion de la flor
 	*/ 
     glPushMatrix();
     glRotatef(rotacionD+rotacionI, 0.0f,0.0f,1.0f);
-    	
     	/*
 		En esta matriz se hace el escalamiento de la flor
 		(aumentar o dismunir tamaño)
@@ -664,17 +666,11 @@ void dibuja(){
  		glScalef(0.5,0.5,0);
  		glScalef(0.5,0.5,0);
  		glTranslatef( 0,122, 0 );
-			 
 			 tallo();
- 
  			 hoja();
- 
  			 petalos();
- 			 
  			 corolla();
- 
  		glPopMatrix();
- 		
     /* Regresamos la matriz de transformación a su estado
      * anterior para volver a dibujar desde el origen */
     glPopMatrix();
